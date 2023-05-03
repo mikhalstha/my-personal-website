@@ -50,7 +50,7 @@
 }
 
 body {
-  margin: 0;
+  margin: 1;
   font-family: var(--bs-font-sans-serif);
   font-size: 1rem;
   font-weight: 400;
@@ -435,7 +435,7 @@ output {
 }
 
 iframe {
-  border: 0;
+  border: 5;
 }
 
 summary {
@@ -11067,4 +11067,5 @@ html {
 
 .youtube {
   width: 50%;
+  floar: Lest;
 }
