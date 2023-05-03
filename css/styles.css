@@ -11066,6 +11066,15 @@ html {
 
 
 .column{
-  width: 50%;
-  floar: Left;
+    float: Left;
 }
+.column.side{
+  width: 50%;
+}
+.column.main{
+  width: 50%;
+}
+
+
+
+
