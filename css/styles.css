@@ -7610,6 +7610,7 @@ button.bg-dark:focus {
 .mb-5,
 .my-5 {
   margin-bottom: 3rem !important;
+  text-align: justify;
   
 }
 
