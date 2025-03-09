@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Kalimati';
+            src: url('Kalimati.ttf') format('truetype'); /* Add the path to your Kalimati font file */
+        }
+
+        body {
+            font-family: 'Kalimati', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 90%;
+            border: none;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .question {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        button {
+            background: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #e68900;
+        }
+
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Basic Computer MCQ Quiz</h2>
+
+        <form id="quizForm">
+            <label>विद्यार्थीको नाम: </label>
+            <input type="text" id="studentName" required><br><br>
+
+            <div id="questions"></div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <p class="result" id="result"></p>
+    </div>
+
+    <script>
+        const questionsData = [
+            { question: "डिभाइसत्योडिभाइसहोजसलेसीपीयुलाईजानकारीपठाउँछ।", options: ["इनपुट", "सीपीयू", "आउटपुट", "मेमोरी"], answer: "इनपुट" },
+            { question: "निम्नमध्येकुनSecondary Memoryकोउपकरणहो?", options: ["किबोर्ड", "हार्डडिस्क", "ALU", "माथिका सबै"], answer: "हार्डडिस्क" },
+            { question: "पृष्ठविभाजन (Page Break) गर्नकुनसर्टकटKey थिचिन्छ?", options: ["ALT + ENTER", "Shift + Enter", "Shift + CTRL + Enter", "CTRL + Enter"], answer: "CTRL + Enter" },
+            { question: "सक्रियकोष्ठक (Active Cell) कोसामग्रीकुनस्थानमादेखिन्छ?", options: ["सक्रियकोष्ठक (Active Cell)", "मेनुपट्टी (Menu Bar)", "सूत्रपट्टी (Formula Bar)", "कुनैपनिहोइन"], answer: "सूत्रपट्टी (Formula Bar)" },
+            { question: "एक्सेल (Excel) मानयाँवर्कबुकखोल्दाकतिशीटहरूहुन्छन्?", options: ["Three", "Four", "Two", "Seven"], answer: "Three" },
+            { question: "एक्सेलमासबैसूत्रहरू (Formula) कुनचिन्हबाटसुरुहुन्छन्?", options: ["%", "$", "=", "+"], answer: "=" },
+            { question: "एक्सेलवर्कबुकसुरक्षित (Save) गर्नकुनसर्टकटKeyप्रयोगगरिन्छ?", options: ["CTRL + X", "CTRL + S", "अफिसबटन→ Save", "b र c दुबै"], answer: "CTRL + S" },
+            { question: "दुईकोष्ठ (A1 + A2) कोसंख्यालाईजोड्नकुनसूत्रप्रयोगगरिन्छ?", options: ["=A1+A2", "=to gather (A1:A2)", "=add(A1+A2)", "A1Puls A2"], answer: "=A1+A2" },
+            { question: "ट्रान्जिस्टर (Transistor) कुनपुस्ताकाकम्प्युटरहरूमाप्रयोगगरिएकोथियो?", options: ["First Generation", "Fourth Generation", "Second Generation", "माथिकाकुनैपनिहोइन"], answer: "Second Generation" },
+            { question: "CTRL + N कुनकार्यकोलागिप्रयोगगरिन्छ?", options: ["Save Document", "New Document", "Open Document", "Close Document"], answer: "New Document" }
+        ];
+
+        function loadQuestions() {
+            let questionsHtml = "";
+            questionsData.forEach((q, index) => {
+                questionsHtml += `<div class="question">
+                    <p>${index + 1}. ${q.question}</p>`;
+                q.options.forEach(opt => {
+                    questionsHtml += `<input type="radio" name="q${index}" value="${opt}" required> ${opt}<br>`;
+                });
+                questionsHtml += `</div>`;
+            });
+            document.getElementById("questions").innerHTML = questionsHtml;
+        }
+
+        document.getElementById("quizForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let score = 0;
+            const totalQuestions = questionsData.length;
+            const studentName = document.getElementById("studentName").value.trim();
+
+            if (studentName === "") {
+                alert("कृपया विद्यार्थीको नाम लेख्नुहोस्!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add Kalimati font (replace with your base64 font string)
+            const kalimatiFont = "AAEAAAASAQAABAAgRkZUTW..."; // Replace with your base64 font string
+            doc.addFileToVFS("Kalimati.ttf", kalimatiFont);
+            doc.addFont("Kalimati.ttf", "Kalimati", "normal");
+            doc.setFont("Kalimati");
+
+            // Set initial position for content
+            let yPos = 20;
+
+            // Add title
+            doc.setFontSize(16);
+            doc.text("MCQ Result", 10, yPos);
+            yPos += 10;
+
+            // Add student name
+            doc.setFontSize(12);
+            doc.text(`विद्यार्थीको नाम: ${studentName}`, 10, yPos);
+            yPos += 10;
+
+            // Add "Answer:" heading
+            doc.text("Answer:", 10, yPos);
+            yPos += 10;
+
+            // Add answers and calculate score
+            questionsData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const selectedAnswer = selected ? selected.value : "No Answer";
+                const correctAnswer = q.answer;
+
+                // Check if the answer is correct
+                if (selected && selectedAnswer === correctAnswer) {
+                    score++; // Increment score for correct answers
+                    doc.setTextColor(0, 128, 0); // Green for correct answers
+                } else {
+                    doc.setTextColor(255, 0, 0); // Red for incorrect answers
+                }
+
+                // Display answer in the format: 1. (a or b or c or d)
+                doc.text(`${index + 1}. (${selectedAnswer})`, 10, yPos);
+                yPos += 10;
+
+                // Reset text color to black
+                doc.setTextColor(0, 0, 0);
+            });
+
+            // Add marks
+            doc.text(`Mark: ${score} / ${totalQuestions}`, 10, yPos);
+
+            // Save the PDF with the student's name as the filename
+            doc.save(`${studentName}_MCQ_Result.pdf`);
+
+            // Display result on the page
+            document.getElementById("result").innerText = `तपाईंको अंक: ${score} / ${totalQuestions}`;
+        });
+
+        loadQuestions();
+    </script>
+
+</body>
+</html>
