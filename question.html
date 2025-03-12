@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: 'Kalimati';
-            src: url('Kalimati.ttf') format('truetype'); /* Add the path to your Kalimati font file */
+            src: url('Kalimati.ttf') format('truetype');
         }
 
         body {
@@ -18,6 +18,7 @@
             text-align: center;
             margin: 0;
             padding: 20px;
+            position: relative;
         }
 
         .container {
@@ -28,6 +29,16 @@
             max-width: 500px;
             margin: auto;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .visitor-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
         h2 {
@@ -56,6 +67,16 @@
             text-align: left;
         }
 
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+
+        .wrong {
+            color: red;
+            font-weight: bold;
+        }
+
         button {
             background: #ff9800;
             color: white;
@@ -80,6 +101,10 @@
 </head>
 <body>
 
+    <div class="visitor-counter">
+        📊 Visitor Count: <span id="visitorCount">0</span>
+    </div>
+
     <div class="container">
         <h2>Basic Computer MCQ Quiz</h2>
 
@@ -99,12 +124,12 @@
         const questionsData = [
             { question: "......डिभाइस त्यो डिभाइस हो जसले सीपीयु लाई जानकारी पठाउँछ।", options: ["इनपुट", "सीपीयू", "आउटपुट", "मेमोरी"], answer: "इनपुट" },
             { question: "निम्न मध्ये कुन Secondary Memoryको उपकरण हो?", options: ["किबोर्ड", "हार्डडिस्क", "ALU", "माथिका सबै"], answer: "हार्डडिस्क" },
-            { question: "ms word मा पृष्ठ विभाजन (Page Break) गर्न कुन सर्टकट Key थिचिन्छ?", options: ["ALT + ENTER", "Shift + Enter", "Shift + CTRL + Enter", "CTRL + Enter"], answer: "CTRL + Enter" },
+            { question: "MS Word मा पृष्ठ विभाजन (Page Break) गर्न कुन सर्टकट Key थिचिन्छ?", options: ["ALT + ENTER", "Shift + Enter", "Shift + CTRL + Enter", "CTRL + Enter"], answer: "CTRL + Enter" },
             { question: "सक्रिय कोष्ठक (Active Cell) को सामग्री कुन स्थानमा देखिन्छ?", options: ["सक्रिय कोष्ठक (Active Cell)", "मेनुपट्टी (Menu Bar)", "सूत्रपट्टी (Formula Bar)", "कुनैपनिहोइन"], answer: "सूत्रपट्टी (Formula Bar)" },
-            { question: "एक्सेल (Excel) मा नयाँ वर्क बुक खोल्दा कति शीटहरू हुन्छन्?", options: ["Three", "Four", "Two", "Seven"], answer: "Three" },
-            { question: "एक्सेलमा सबै सूत्रहरू (Formula) कुन चिन्ह बाट सुरु हुन्छन्?", options: ["%", "$", "=", "+"], answer: "=" },
-            { question: "एक्सेल वर्क बुक सुरक्षित (Save) गर्ने तरिका?", options: ["CTRL + X", "CTRL + S", "अफि सबटन→ Save", "b र c दुबै"], answer: "b र c दुबै" },
-            { question: "दुई cell (A1 + A2) को संख्या लाई जोड्न कुन सूत्र प्रयोग गरिन्छ?", options: ["=A1+A2", "=to gather (A1:A2)", "=add(A1+A2)", "A1Puls A2"], answer: "=A1+A2" },
+            { question: "Excel मा नयाँ वर्क बुक खोल्दा कति शीटहरू हुन्छन्?", options: ["Three", "Four", "Two", "Seven"], answer: "Three" },
+            { question: "Excel मा सबै सूत्रहरू (Formula) कुन चिन्ह बाट सुरु हुन्छन्?", options: ["%", "$", "=", "+"], answer: "=" },
+            { question: "Excel वर्क बुक सुरक्षित (Save) गर्ने तरिका?", options: ["CTRL + X", "CTRL + S", "अफिस बटन → Save", "b र c दुबै"], answer: "b र c दुबै" },
+            { question: "दुई Cell (A1 + A2) को संख्या लाई जोड्न कुन सूत्र प्रयोग गरिन्छ?", options: ["=A1+A2", "=to gather (A1:A2)", "=add(A1+A2)", "A1Puls A2"], answer: "=A1+A2" },
             { question: "ट्रान्जिस्टर (Transistor) कुन पुस्ताका कम्प्युटरहरूमा प्रयोग गरिएको थियो?", options: ["First Generation", "Fourth Generation", "Second Generation", "माथिकाकुनैपनिहोइन"], answer: "Second Generation" },
             { question: "CTRL + N कुन कार्यको लागि प्रयोग गरिन्छ?", options: ["Save Document", "New Document", "Open Document", "Close Document"], answer: "New Document" }
         ];
@@ -112,7 +137,7 @@
         function loadQuestions() {
             let questionsHtml = "";
             questionsData.forEach((q, index) => {
-                questionsHtml += `<div class="question">
+                questionsHtml += `<div class="question" id="question${index}">
                     <p>${index + 1}. ${q.question}</p>`;
                 q.options.forEach(opt => {
                     questionsHtml += `<input type="radio" name="q${index}" value="${opt}" required> ${opt}<br>`;
@@ -120,6 +145,16 @@
                 questionsHtml += `</div>`;
             });
             document.getElementById("questions").innerHTML = questionsHtml;
+        }
+
+        function updateVisitorCount() {
+            let count = localStorage.getItem("visitorCount");
+            if (!count) {
+                count = 0;
+            }
+            count++;
+            localStorage.setItem("visitorCount", count);
+            document.getElementById("visitorCount").innerText = count;
         }
 
         document.getElementById("quizForm").addEventListener("submit", function(event) {
@@ -134,66 +169,27 @@
                 return;
             }
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            // Add Kalimati font (replace with your base64 font string)
-            const kalimatiFont = "AAEAAAASAQAABAAgRkZUTW..."; // Replace with your base64 font string
-            doc.addFileToVFS("Kalimati.ttf", kalimatiFont);
-            doc.addFont("Kalimati.ttf", "Kalimati", "normal");
-            doc.setFont("Kalimati");
-
-            // Set initial position for content
-            let yPos = 20;
-
-            // Add title
-            doc.setFontSize(16);
-            doc.text("MCQ Result", 10, yPos);
-            yPos += 10;
-
-            // Add student name
-            doc.setFontSize(12);
-            doc.text(`Student Name: ${studentName}`, 10, yPos);
-            yPos += 10;
-
-            // Add marks
             questionsData.forEach((q, index) => {
                 const selected = document.querySelector(`input[name="q${index}"]:checked`);
-                const selectedAnswer = selected ? selected.value : "No Answer";
-                const correctAnswer = q.answer;
+                const questionDiv = document.getElementById(`question${index}`);
 
-                // Check if the answer is correct
-                if (selected && selectedAnswer === correctAnswer) {
-                    score++;
+                if (selected) {
+                    if (selected.value === q.answer) {
+                        score++;
+                        questionDiv.style.color = "green";
+                        questionDiv.innerHTML += `<p class="correct">✔ सही उत्तर: ${q.answer}</p>`;
+                    } else {
+                        questionDiv.style.color = "red";
+                        questionDiv.innerHTML += `<p class="wrong">✖ गलत उत्तर: ${selected.value} (सही उत्तर: ${q.answer})</p>`;
+                    }
                 }
             });
 
-            // Add obtain mark and total mark
-            doc.text(`Obtain Mark: ${score} / ${totalQuestions}`, 10, yPos);
-            yPos += 10;
-
-            // Add remark based on score
-            let remark = "";
-            if (score === totalQuestions) {
-                remark = "Excellent!";
-            } else if (score >= totalQuestions * 0.75) {
-                remark = "Very Good!";
-            } else if (score >= totalQuestions * 0.5) {
-                remark = "Good!";
-            } else {
-                remark = "Not Bad, Keep Improving!";
-            }
-
-            doc.text(`Remark: ${remark}`, 10, yPos);
-
-            // Save the PDF with the student's name as the filename
-            doc.save(`${studentName}_MCQ_Result.pdf`);
-
-            // Display result on the page
             document.getElementById("result").innerText = `तपाईंको अंक: ${score} / ${totalQuestions}`;
         });
 
         loadQuestions();
+        updateVisitorCount();
     </script>
 
 </body>
