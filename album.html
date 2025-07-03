@@ -1,565 +1,287 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Our Wedding Album</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather&display=swap" rel="stylesheet">
-
-    <style>
-
-        body {
-
-            background-color: #fdfaf6;
-
-            font-family: 'Merriweather', serif;
-
-        }
-
-
-
-        .book-container {
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            padding: 3rem 0;
-
-            perspective: 2500px;
-
-        }
-
-
-
-        .book {
-
-            /* CHANGED: Made the book wider */
-
-            width: 500px;
-
-            height: 450px;
-
-            position: relative;
-
-            transform-style: preserve-3d;
-
-            transition: transform 1.5s ease-in-out;
-
-            cursor: pointer;
-
-        }
-
-
-
-        /* Book Cover Styling */
-
-        .book-cover {
-
-            position: absolute;
-
-            width: 100%;
-
-            height: 100%;
-
-            background: #067778;
-
-            background-image: linear-gradient(to right, #067778 0%, #5c5c5c 100%);
-
-            color: white;
-
-            transform-origin: left;
-
-            transition: transform 1.5s ease-in-out, z-index 1.5s;
-
-            z-index: 10;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            text-align: center;
-
-            font-family: 'Dancing Script', cursive;
-
-            box-shadow: inset 10px 0 30px rgba(0,0,0,.5), 10px 0 20px rgba(0,0,0,.5);
-
-        }
-
-
-
-        .book-cover h2 {
-
-            font-size: 3rem;
-
-            margin: 0;
-
-        }
-
-
-
-        .book-cover span {
-
-            font-size: 1.2rem;
-
-        }
-
-
-
-        /* Page Styling */
-
-        .page {
-
-            position: absolute;
-
-            width: 100%;
-
-            height: 100%;
-
-            top: 0;
-
-            left: 0;
-
-            transform-origin: left;
-
-            transform-style: preserve-3d;
-
-            transition: transform 1.5s ease-in-out;
-
-            background-color: #fff;
-
-            border: 1px solid #ccc;
-
-            z-index: 1;
-
-        }
-
-
-
-        .page-front,
-
-        .page-back {
-
-            position: absolute;
-
-            width: 100%;
-
-            height: 100%;
-
-            backface-visibility: hidden;
-
-            -webkit-backface-visibility: hidden;
-
-        }
-
-
-
-        .page-front {
-
-            z-index: 2;
-
-        }
-
-
-
-        .page-back {
-
-            transform: rotateY(180deg);
-
-            z-index: 1;
-
-        }
-
-
-
-        .page img {
-
-            width: 100%;
-
-            height: 100%;
-
-            object-fit: cover;
-
-        }
-
-
-
-        /* Back Cover of the Book */
-
-        .book-back {
-
-            position: absolute;
-
-            width: 100%;
-
-            height: 100%;
-
-            top: 0;
-
-            left: 0;
-
-            background: #067778;
-
-            transform: rotateY(0deg) translateZ(-10px); /* Adjust thickness */
-
-            z-index: 0;
-
-        }
-
-
-
-        /* Interaction Logic */
-
-        .book.open {
-
-            transform: translateX(50%);
-
-            cursor: default;
-
-        }
-
-
-
-        .book.open .book-cover {
-
-            transform: rotateY(-180deg);
-
-            z-index: 1;
-
-        }
-
-
-
-        .page.flipped {
-
-            transform: rotateY(-180deg);
-
-        }
-
-
-
-        /* NEW: Navigation Button Styling */
-
-        .navigation-buttons {
-
-            text-align: center;
-
-            margin-top: 20px;
-
-            opacity: 0;
-
-            visibility: hidden;
-
-            transition: opacity 0.5s ease-in-out;
-
-        }
-
-
-
-        .navigation-buttons.show {
-
-            opacity: 1;
-
-            visibility: visible;
-
-        }
-
-
-
-        .navigation-buttons .btn {
-
-            margin: 0 10px;
-
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-
-        }
-
-    </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Wedding Album</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdfaf6;
+            font-family: 'Merriweather', serif;
+        }
+
+        .book-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 0;
+            perspective: 2500px;
+        }
+
+        .book {
+            /* CHANGED: Made the book wider */
+            width: 500px;
+            height: 450px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.5s ease-in-out;
+            cursor: pointer;
+        }
+
+        /* Book Cover Styling */
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #067778;
+            background-image: linear-gradient(to right, #067778 0%, #5c5c5c 100%);
+            color: white;
+            transform-origin: left;
+            transition: transform 1.5s ease-in-out, z-index 1.5s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            box-shadow: inset 10px 0 30px rgba(0,0,0,.5), 10px 0 20px rgba(0,0,0,.5);
+        }
+
+        .book-cover h2 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .book-cover span {
+            font-size: 1.2rem;
+        }
+
+        /* Page Styling */
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 1.5s ease-in-out;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            z-index: 1;
+        }
+
+        .page-front,
+        .page-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .page-front {
+            z-index: 2;
+        }
+
+        .page-back {
+            transform: rotateY(180deg);
+            z-index: 1;
+        }
+
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Back Cover of the Book */
+        .book-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: #067778;
+            transform: rotateY(0deg) translateZ(-10px); /* Adjust thickness */
+            z-index: 0;
+        }
+
+        /* Interaction Logic */
+        .book.open {
+            transform: translateX(50%);
+            cursor: default;
+        }
+
+        .book.open .book-cover {
+            transform: rotateY(-180deg);
+            z-index: 1;
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* NEW: Navigation Button Styling */
+        .navigation-buttons {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .navigation-buttons.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .navigation-buttons .btn {
+            margin: 0 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
-
 <body>
 
-
-
-    <header class="py-5 text-center container">
-
-        <div class="row py-lg-5">
-
-            <div class="col-lg-6 col-md-8 mx-auto">
-
-                <h1 class="fw-light" style="font-family: 'Dancing Script', cursive;">Our Wedding Story</h1>
-
-                <p class="lead text-muted" style="font-family: 'Merriweather', serif;">The beautiful moments from the day we said "I do."</p>
-
-         </div>
-
-        </div>
-
-    </header>
-
-   <main>
-
-        <div class="book-container">
-
-            <div class="book" id="book">
-
-                <div class="book-cover">
-
-                    <div>
-
-                        <h2>Mikhal &amp; Garima</h2>
-
-                        <span>Est. 2081-10-04</span>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="page">
-
-                    <div class="page-front">
-
-                        <img src="assets/img/a1.jpg" alt="Wedding Photo 1">
-
-                    </div>
-
-                    <div class="page-back">
-
-                        <img src="assets/img/a2.jpg" alt="Wedding Photo 2">
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="page">
-
-                     <div class="page-front">
-
-                        <img src="assets/img/a3.jpg" alt="Wedding Photo 3">
-
-                    </div>
-
-                    <div class="page-back">
-
-                        <img src="assets/img/a4.JPG" alt="Wedding Photo 4">
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="page">
-
-                     <div class="page-front">
-
-                        <img src="assets/img/a1.jpg" alt="Wedding Photo 5">
-
-                    </div>
-
-                    <div class="page-back">
-
-                        <img src="assets/img/a2.jpg" alt="Wedding Photo 6">
-
-                    </div>
-
-                </div>
-
-                
-
-                <div class="book-back"></div>
-
-            </div>
-
-        </div>
-
-        
-
-        <div class="navigation-buttons" id="nav-buttons">
-
-            <button id="prev-btn" class="btn btn-light">‹ Previous</button>
-
-            <button id="next-btn" class="btn btn-light">Next ›</button>
-
-        </div>
-
-
-
-    </main>
-
-
-
-    <footer class="text-muted py-5 bg-light">
-
-        <div class="container text-center">
-
-            <p class="mb-1">Wedding Album &copy; Name</p>
-
-        </div>
-
-    </footer>
-
-
-
-    <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const book = document.getElementById('book');
-
-            const pages = document.querySelectorAll('.page');
-
-            const navButtons = document.getElementById('nav-buttons');
-
-            const prevBtn = document.getElementById('prev-btn');
-
-            const nextBtn = document.getElementById('next-btn');
-
-
-
-            let currentPage = 0;
-
-            let isOpen = false;
-
-            const totalPages = pages.length;
-
-
-
-            // --- FUNCTIONS ---
-
-
-
-            function updateButtons() {
-
-                if (!isOpen) {
-
-                    navButtons.classList.remove('show');
-
-                } else {
-
-                    navButtons.classList.add('show');
-
-                    prevBtn.disabled = currentPage === 0;
-
-                    nextBtn.disabled = currentPage === totalPages;
-
-                }
-
-            }
-
-
-
-            function goNextPage() {
-
-                if (currentPage < totalPages) {
-
-                    pages[currentPage].classList.add('flipped');
-
-                    pages[currentPage].style.zIndex = currentPage + 2;
-
-                    currentPage++;
-
-                    updateButtons();
-
-                }
-
-            }
-
-
-
-            function goPrevPage() {
-
-                if (currentPage > 0) {
-
-                    currentPage--;
-
-                    pages[currentPage].classList.remove('flipped');
-
-                    pages[currentPage].style.zIndex = totalPages - currentPage;
-
-                    updateButtons();
-
-                }
-
-            }
-
-
-
-            // --- EVENT LISTENERS ---
-
-
-
-            // Open the book
-
-            book.addEventListener('click', (e) => {
-
-                if (!isOpen) {
-
-                    book.classList.add('open');
-
-                    isOpen = true;
-
-                    updateButtons();
-
-                }
-
-            });
-
-
-
-            // Button clicks
-
-            prevBtn.addEventListener('click', goPrevPage);
-
-            nextBtn.addEventListener('click', goNextPage);
-
-
-
-            // Keyboard navigation
-
-            document.addEventListener('keydown', (e) => {
-
-                if (!isOpen) return;
-
-                if (e.key === 'ArrowRight') {
-
-                    goNextPage();
-
-                } else if (e.key === 'ArrowLeft') {
-
-                    goPrevPage();
-
-                }
-
-            });
-
-
-
-            // Initialize button states
-
-            updateButtons();
-
-        });
-
-    </script>
-
+    <header class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light" style="font-family: 'Dancing Script', cursive;">Our Wedding Story</h1>
+                <p class="lead text-muted" style="font-family: 'Merriweather', serif;">The beautiful moments from the day we said "I do."</p>
+                <p>
+                    <small>Click the book to open.</small>
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="book-container">
+            <div class="book" id="book">
+                <div class="book-cover">
+                    <div>
+                        <h2>m &amp; g</h2>
+                        <span>Est. 2025</span>
+                    </div>
+                </div>
+
+                <div class="page">
+                    <div class="page-front">
+                        <img src="assets/img/a1.JPG" alt="Wedding Photo 1">
+                    </div>
+                    <div class="page-back">
+                        <img src="assets/img/a2.JPG" alt="Wedding Photo 2">
+                    </div>
+                </div>
+
+                <div class="page">
+                     <div class="page-front">
+                        <img src="assets/img/a3.JPG" alt="Wedding Photo 3">
+                    </div>
+                    <div class="page-back">
+                        <img src="assets/img/a4.JPG" alt="Wedding Photo 4">
+                    </div>
+                </div>
+
+                <div class="page">
+                     <div class="page-front">
+                        <img src="assets/img/a3.JPG" alt="Wedding Photo 5">
+                    </div>
+                    <div class="page-back">
+                        <img src="assets/img/a1.JPG" alt="Wedding Photo 6">
+                    </div>
+                </div>
+                
+                <div class="book-back"></div>
+            </div>
+        </div>
+        
+        <div class="navigation-buttons" id="nav-buttons">
+            <button id="prev-btn" class="btn btn-light">‹ Previous</button>
+            <button id="next-btn" class="btn btn-light">Next ›</button>
+        </div>
+
+    </main>
+
+    <footer class="text-muted py-5 bg-light">
+        <div class="container text-center">
+            <p class="mb-1">... &copy; Name</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const book = document.getElementById('book');
+            const pages = document.querySelectorAll('.page');
+            const navButtons = document.getElementById('nav-buttons');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            let currentPage = 0;
+            let isOpen = false;
+            const totalPages = pages.length;
+
+            // --- FUNCTIONS ---
+
+            function updateButtons() {
+                if (!isOpen) {
+                    navButtons.classList.remove('show');
+                } else {
+                    navButtons.classList.add('show');
+                    prevBtn.disabled = currentPage === 0;
+                    nextBtn.disabled = currentPage === totalPages;
+                }
+            }
+
+            function goNextPage() {
+                if (currentPage < totalPages) {
+                    pages[currentPage].classList.add('flipped');
+                    pages[currentPage].style.zIndex = currentPage + 2;
+                    currentPage++;
+                    updateButtons();
+                }
+            }
+
+            function goPrevPage() {
+                if (currentPage > 0) {
+                    currentPage--;
+                    pages[currentPage].classList.remove('flipped');
+                    pages[currentPage].style.zIndex = totalPages - currentPage;
+                    updateButtons();
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+
+            // Open the book
+            book.addEventListener('click', (e) => {
+                if (!isOpen) {
+                    book.classList.add('open');
+                    isOpen = true;
+                    updateButtons();
+                }
+            });
+
+            // Button clicks
+            prevBtn.addEventListener('click', goPrevPage);
+            nextBtn.addEventListener('click', goNextPage);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!isOpen) return;
+                if (e.key === 'ArrowRight') {
+                    goNextPage();
+                } else if (e.key === 'ArrowLeft') {
+                    goPrevPage();
+                }
+            });
+
+            // Initialize button states
+            updateButtons();
+        });
+    </script>
 </body>
-
 </html>
