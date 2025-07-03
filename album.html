@@ -16,21 +16,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 3rem 0;
+            padding: 3rem 1rem;
             perspective: 2500px;
         }
 
+        /* CHANGED: Desktop size set here */
         .book {
-            /* CHANGED: Made the book wider */
-            width: 200px;
-            height: 150px;
+            width: 500px;
+            height: 450px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 1.5s ease-in-out;
             cursor: pointer;
         }
 
-        /* Book Cover Styling */
         .book-cover {
             position: absolute;
             width: 100%;
@@ -58,7 +57,6 @@
             font-size: 1.2rem;
         }
 
-        /* Page Styling */
         .page {
             position: absolute;
             width: 100%;
@@ -82,14 +80,8 @@
             -webkit-backface-visibility: hidden;
         }
 
-        .page-front {
-            z-index: 2;
-        }
-
-        .page-back {
-            transform: rotateY(180deg);
-            z-index: 1;
-        }
+        .page-front { z-index: 2; }
+        .page-back { transform: rotateY(180deg); z-index: 1; }
 
         .page img {
             width: 100%;
@@ -97,7 +89,6 @@
             object-fit: cover;
         }
 
-        /* Back Cover of the Book */
         .book-back {
             position: absolute;
             width: 100%;
@@ -105,11 +96,10 @@
             top: 0;
             left: 0;
             background: #067778;
-            transform: rotateY(0deg) translateZ(-10px); /* Adjust thickness */
+            transform: rotateY(0deg) translateZ(-10px);
             z-index: 0;
         }
 
-        /* Interaction Logic */
         .book.open {
             transform: translateX(50%);
             cursor: default;
@@ -124,7 +114,6 @@
             transform: rotateY(-180deg);
         }
 
-        /* NEW: Navigation Button Styling */
         .navigation-buttons {
             text-align: center;
             margin-top: 20px;
@@ -142,59 +131,58 @@
             margin: 0 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+
+        /* CHANGED: Media query for mobile/tablet size */
+        @media (max-width: 768px) {
+            .book {
+                width: 200px;
+                height: 150px;
+            }
+
+            .book.open {
+                transform: translateX(50%);
+            }
+
+            .book-cover h2 {
+                font-size: 1.5rem;
+            }
+
+            .book-cover span {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
-
     <header class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light" style="font-family: 'Dancing Script', cursive;">Our Wedding Story</h1>
                 <p class="lead text-muted" style="font-family: 'Merriweather', serif;">The beautiful moments from the day we said "I do."</p>
-                <p>
-                    <small>Click the book to open.</small>
-                </p>
-            </div>
+           </div>
         </div>
     </header>
-
-    <main>
+   <main>
         <div class="book-container">
             <div class="book" id="book">
                 <div class="book-cover">
                     <div>
-                        <h2>m &amp; g</h2>
-                        <span>Est. 2025</span>
+                        <h2>Mikhal &amp; Garima</h2>
+                        <span>Est. 2081-10-04</span>
                     </div>
                 </div>
-
                 <div class="page">
-                    <div class="page-front">
-                        <img src="assets/img/a1.jpg" alt="Wedding Photo 1">
-                    </div>
-                    <div class="page-back">
-                        <img src="assets/img/a2.jpg" alt="Wedding Photo 2">
-                    </div>
+                    <div class="page-front"><img src="assets/img/a1.jpg" alt="Wedding Photo 1"></div>
+                    <div class="page-back"><img src="assets/img/a2.jpg" alt="Wedding Photo 2"></div>
                 </div>
-
                 <div class="page">
-                     <div class="page-front">
-                        <img src="assets/img/a3.jpg" alt="Wedding Photo 3">
-                    </div>
-                    <div class="page-back">
-                        <img src="assets/img/a4.JPG" alt="Wedding Photo 4">
-                    </div>
+                    <div class="page-front"><img src="assets/img/a3.jpg" alt="Wedding Photo 3"></div>
+                    <div class="page-back"><img src="assets/img/a4.JPG" alt="Wedding Photo 4"></div>
                 </div>
-
                 <div class="page">
-                     <div class="page-front">
-                        <img src="assets/img/a3.jpg" alt="Wedding Photo 5">
-                    </div>
-                    <div class="page-back">
-                        <img src="assets/img/a1.jpg" alt="Wedding Photo 6">
-                    </div>
+                    <div class="page-front"><img src="assets/img/a1.jpg" alt="Wedding Photo 5"></div>
+                    <div class="page-back"><img src="assets/img/a2.jpg" alt="Wedding Photo 6"></div>
                 </div>
-                
                 <div class="book-back"></div>
             </div>
         </div>
@@ -203,12 +191,10 @@
             <button id="prev-btn" class="btn btn-light">‹ Previous</button>
             <button id="next-btn" class="btn btn-light">Next ›</button>
         </div>
-
     </main>
-
     <footer class="text-muted py-5 bg-light">
         <div class="container text-center">
-            <p class="mb-1">... &copy; Name</p>
+            <p class="mb-1">Wedding Album &copy; Name</p>
         </div>
     </footer>
 
@@ -219,12 +205,9 @@
             const navButtons = document.getElementById('nav-buttons');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
-
             let currentPage = 0;
             let isOpen = false;
             const totalPages = pages.length;
-
-            // --- FUNCTIONS ---
 
             function updateButtons() {
                 if (!isOpen) {
@@ -254,9 +237,6 @@
                 }
             }
 
-            // --- EVENT LISTENERS ---
-
-            // Open the book
             book.addEventListener('click', (e) => {
                 if (!isOpen) {
                     book.classList.add('open');
@@ -264,12 +244,10 @@
                     updateButtons();
                 }
             });
-
-            // Button clicks
+            
             prevBtn.addEventListener('click', goPrevPage);
             nextBtn.addEventListener('click', goNextPage);
 
-            // Keyboard navigation
             document.addEventListener('keydown', (e) => {
                 if (!isOpen) return;
                 if (e.key === 'ArrowRight') {
@@ -279,7 +257,6 @@
                 }
             });
 
-            // Initialize button states
             updateButtons();
         });
     </script>
