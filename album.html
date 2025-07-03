@@ -16,14 +16,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 3rem 0;
+            padding: 3rem 1rem; /* Added horizontal padding */
             perspective: 2500px;
         }
 
         .book {
-            /* CHANGED: Made the book wider */
-            width: 500px;
-            height: 450px;
+            /* CHANGED: Made the book responsive */
+            width: 90vw; /* Use viewport width */
+            max-width: 500px; /* Set a max-width for larger screens */
+            aspect-ratio: 10 / 9; /* Maintain aspect ratio instead of fixed height */
             position: relative;
             transform-style: preserve-3d;
             transition: transform 1.5s ease-in-out;
@@ -124,7 +125,7 @@
             transform: rotateY(-180deg);
         }
 
-        /* NEW: Navigation Button Styling */
+        /* Navigation Button Styling */
         .navigation-buttons {
             text-align: center;
             margin-top: 20px;
@@ -142,6 +143,26 @@
             margin: 0 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+
+        /* NEW: Media Queries for smaller devices */
+        @media (max-width: 768px) {
+            .book-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .book.open {
+                /* Adjust the open position on smaller screens */
+                transform: translateX(45%);
+            }
+
+            .book-cover h2 {
+                font-size: 2rem;
+            }
+
+            .book-cover span {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -151,7 +172,7 @@
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light" style="font-family: 'Dancing Script', cursive;">Our Wedding Story</h1>
                 <p class="lead text-muted" style="font-family: 'Merriweather', serif;">The beautiful moments from the day we said "I do."</p>
-         </div>
+           </div>
         </div>
     </header>
    <main>
@@ -174,7 +195,7 @@
                 </div>
 
                 <div class="page">
-                     <div class="page-front">
+                       <div class="page-front">
                         <img src="assets/img/a3.jpg" alt="Wedding Photo 3">
                     </div>
                     <div class="page-back">
@@ -183,7 +204,7 @@
                 </div>
 
                 <div class="page">
-                     <div class="page-front">
+                       <div class="page-front">
                         <img src="assets/img/a1.jpg" alt="Wedding Photo 5">
                     </div>
                     <div class="page-back">
@@ -262,8 +283,8 @@
             });
 
             // Button clicks
-            prevBtn.addEventListener('click', goPrevPage);
-            nextBtn.addEventListener('click', goNextPage);
+            prevBtn.addEventListener('click', goNextPage);
+            nextBtn.addEventListener('click', goPrevPage);
 
             // Keyboard navigation
             document.addEventListener('keydown', (e) => {
@@ -281,4 +302,3 @@
     </script>
 </body>
 </html>
-```
