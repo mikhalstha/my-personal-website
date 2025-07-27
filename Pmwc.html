@@ -131,15 +131,35 @@
       Below, you'll find the updated <em>PMWC 2025 points table</em>, the <strong>Top 8 teams qualified for the finals</strong>, and the list of teams still competing for the last spots. Follow this page for live team status, rankings, and exclusive updates by <strong>Tekendraman Shrestha</strong>.
     </p>
   </section>
+<!-- All Teams Photo Slider -->
+<section>
+  <h2>📸 PMWC 2025 Group stage last day</h2>
+  <div style="text-align:center; margin: 20px 0;">
+    <img id="groupPhoto" src="assets/img/11.jpg" 
+         alt="All Teams Group Photo" 
+         style="max-width:100%; border-radius:10px; box-shadow: 0 0 15px #ffcc00;" />
+    <figcaption style="color:#ffcc00; margin-top: 8px; font-style: italic;">All Teams - Slide <span id="slideNumber">1</span>/3</figcaption>
+    <div style="margin-top: 15px;">
+      <button onclick="changePhoto(-1)" style="padding: 10px 20px; background-color:#222; color:#fff; border:none; cursor:pointer; border-radius:5px;">⟵ Prev</button>
+      <button onclick="changePhoto(1)" style="padding: 10px 20px; background-color:#222; color:#fff; border:none; cursor:pointer; border-radius:5px; margin-left:10px;">Next ⟶</button>
+    </div>
+  </div>
+</section>
 
-  <!-- All Teams Photo -->
-  <section>
-    <h2>📸 PMWC 2025 Group stage last day </h2>
-    <figure>
-      <img src="assets/img/11.jpg" alt="All Teams Group Photo PMWC 2025" />
-      <figcaption>PMWC 2025 group stage </figcaption>
-    </figure>
-  </section>
+<script>
+  const images = [
+    "assets/img/11.jpg",
+    "assets/img/22.jpg",
+    "assets/img/33.jpg"
+  ];
+  let currentIndex = 0;
+
+  function changePhoto(step) {
+    currentIndex = (currentIndex + step + images.length) % images.length;
+    document.getElementById('groupPhoto').src = images[currentIndex];
+    document.getElementById('slideNumber').textContent = currentIndex + 1;
+  }
+</script>
 
   <!-- Top 8 Teams -->
   <section>
